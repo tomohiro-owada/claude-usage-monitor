@@ -86,17 +86,20 @@ function createIcon(text) {
 }
 
 function createTitleImage(text) {
-  // メニューバー用のテキスト画像を作成
+  // メニューバー用のテキスト画像を作成（白い大きな文字）
   const canvas = require('canvas');
 
-  const fontSize = 18; // フォントサイズ
+  const fontSize = 20; // フォントサイズ
+  console.log(`Creating title image: "${text}" with fontSize=${fontSize}`);
 
-  const canvasInstance = canvas.createCanvas(300, 30);
+  const canvasInstance = canvas.createCanvas(400, 22);
   const ctx = canvasInstance.getContext('2d');
   ctx.font = `bold ${fontSize}px -apple-system`;
   const metrics = ctx.measureText(text);
   const width = Math.ceil(metrics.width) + 8;
   const height = 22;
+
+  console.log(`Canvas size: ${width}x${height}`);
 
   // 実際のサイズでキャンバスを再作成
   const finalCanvas = canvas.createCanvas(width, height);
@@ -105,16 +108,17 @@ function createTitleImage(text) {
   // 背景を透明に
   finalCtx.clearRect(0, 0, width, height);
 
-  // テキストを描画（黒で描画するとシステムが自動的に反転）
+  // 白い文字で描画
   finalCtx.font = `bold ${fontSize}px -apple-system`;
-  finalCtx.fillStyle = 'black';
+  finalCtx.fillStyle = 'white';
   finalCtx.textAlign = 'left';
   finalCtx.textBaseline = 'middle';
   finalCtx.fillText(text, 4, height / 2);
 
   const buffer = finalCanvas.toBuffer('image/png');
   const image = nativeImage.createFromBuffer(buffer);
-  image.setTemplateImage(true); // テンプレート画像として設定
+  image.setTemplateImage(true); // テンプレート画像として設定（システムが色調整）
+  console.log('Title image created successfully');
   return image;
 }
 
@@ -189,9 +193,14 @@ function updateTrayMenu() {
   const sevenDayUtil = usageData.seven_day?.utilization || 0;
   const fiveHourUtil = usageData.five_hour?.utilization || 0;
 
-  // シンプルなテキスト表示（まずはこれでサイズ確認）
+  // 画像を半角スペース、テキストを実際の内容
   const titleText = `S:${fiveHourUtil}% W:${sevenDayUtil}%`;
-  tray.setTitle(titleText);
+  console.log('Setting title:', titleText);
+
+  const titleImage = createTitleImage(' '); // 半角スペース
+  tray.setImage(titleImage);
+
+  tray.setTitle(titleText); // 実際の内容
 
   // コンテキストメニューを作成
   const contextMenu = Menu.buildFromTemplate([
