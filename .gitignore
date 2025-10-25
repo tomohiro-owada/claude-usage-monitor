@@ -1,0 +1,55 @@
+# Dependencies
+node_modules/
+
+# Configuration (contains sensitive data)
+config.json
+
+# Logs
+*.log
+npm-debug.log*
+
+# Runtime data
+*.pid
+*.seed
+*.pid.lock
+
+# Output files
+claude-usage-data.json
+
+# Screenshots
+error-screenshot.png
+
+# OS files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Electron
+dist/
+build/
+out/
+
+# Temporary files
+*.tmp
+.cache/
+
+# Environment files
+.env
+.env.local
+
+# Docker files (not part of this project)
+docker-compose*.yml
+nginx/
+php/
+postgre/
+mac/
+dockerize-*.tar.gz
