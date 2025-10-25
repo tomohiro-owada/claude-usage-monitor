@@ -85,6 +85,39 @@ function createIcon(text) {
   return nativeImage.createFromBuffer(buffer);
 }
 
+function createTitleImage(text) {
+  // メニューバー用のテキスト画像を作成
+  const canvas = require('canvas');
+
+  const fontSize = 18; // フォントサイズ
+
+  const canvasInstance = canvas.createCanvas(300, 30);
+  const ctx = canvasInstance.getContext('2d');
+  ctx.font = `bold ${fontSize}px -apple-system`;
+  const metrics = ctx.measureText(text);
+  const width = Math.ceil(metrics.width) + 8;
+  const height = 22;
+
+  // 実際のサイズでキャンバスを再作成
+  const finalCanvas = canvas.createCanvas(width, height);
+  const finalCtx = finalCanvas.getContext('2d');
+
+  // 背景を透明に
+  finalCtx.clearRect(0, 0, width, height);
+
+  // テキストを描画（黒で描画するとシステムが自動的に反転）
+  finalCtx.font = `bold ${fontSize}px -apple-system`;
+  finalCtx.fillStyle = 'black';
+  finalCtx.textAlign = 'left';
+  finalCtx.textBaseline = 'middle';
+  finalCtx.fillText(text, 4, height / 2);
+
+  const buffer = finalCanvas.toBuffer('image/png');
+  const image = nativeImage.createFromBuffer(buffer);
+  image.setTemplateImage(true); // テンプレート画像として設定
+  return image;
+}
+
 function openSettings() {
   if (settingsWindow) {
     settingsWindow.focus();
@@ -156,8 +189,9 @@ function updateTrayMenu() {
   const sevenDayUtil = usageData.seven_day?.utilization || 0;
   const fiveHourUtil = usageData.five_hour?.utilization || 0;
 
-  // シンプルな表示: S:5時間 W:7日間
-  tray.setTitle(`S:${fiveHourUtil}% W:${sevenDayUtil}%`);
+  // シンプルなテキスト表示（まずはこれでサイズ確認）
+  const titleText = `S:${fiveHourUtil}% W:${sevenDayUtil}%`;
+  tray.setTitle(titleText);
 
   // コンテキストメニューを作成
   const contextMenu = Menu.buildFromTemplate([

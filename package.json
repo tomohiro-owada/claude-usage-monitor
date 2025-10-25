@@ -3,13 +3,45 @@
   "version": "1.0.0",
   "description": "Claude.ai usage monitor for macOS menu bar",
   "main": "menubar-app.js",
+  "author": "Tomohiro Owada",
+  "license": "MIT",
   "scripts": {
     "start": "electron .",
-    "fetch": "node fetch-claude-usage.js"
+    "fetch": "node fetch-claude-usage.js",
+    "build": "electron-builder --mac",
+    "build:universal": "electron-builder --mac --universal",
+    "dist": "electron-builder"
   },
   "dependencies": {
     "canvas": "^3.2.0",
-    "electron": "^28.3.3",
     "puppeteer": "^24.15.0"
+  },
+  "devDependencies": {
+    "electron": "^28.3.3",
+    "electron-builder": "^26.0.12"
+  },
+  "build": {
+    "appId": "com.owada.claude-usage-monitor",
+    "productName": "Claude Usage Monitor",
+    "mac": {
+      "category": "public.app-category.productivity",
+      "target": [
+        {
+          "target": "zip",
+          "arch": ["arm64"]
+        }
+      ]
+    },
+    "files": [
+      "**/*",
+      "!**/*.md",
+      "!.git",
+      "!.gitignore",
+      "!dist",
+      "!build"
+    ],
+    "directories": {
+      "output": "dist"
+    }
   }
 }
