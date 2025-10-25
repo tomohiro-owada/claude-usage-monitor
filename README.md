@@ -2,6 +2,9 @@
 
 macOSメニューバーにClaude.aiの使用状況を表示するElectronアプリです。
 
+<img width="179" height="320" alt="スクリーンショット 2025-10-26 0 27 44" src="https://github.com/user-attachments/assets/922389d3-c6ae-4a14-811c-c3e6e12a7730" />
+
+
 ## 特徴
 
 - **メニューバー常駐**: `S:11% W:91%` のようにシンプルに表示
